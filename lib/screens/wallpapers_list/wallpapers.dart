@@ -169,20 +169,5 @@ class _WallpapersState extends State<Wallpapers> {
     );
   }
 
-  // Future<DataModel> getWallpapers(String query) async {
-  //   Uri mUrl =
-  //       Uri.parse("https://api.pexels.com/v1/search?query=$query&per_page=20");
-  //
-  //   var res = await http.get(mUrl, headers: {
-  //     "Authorization":
-  //         "ccEI7ea5vTWvcypWjTBtmnSVnyGSW9pUpX910XJEbYsJI0We4U08zfRt"
-  //   });
-  //   print("SC: ${res.statusCode},RES: ${res.body}");
-  //   if (res.statusCode == 200) {
-  //     var mData = jsonDecode(res.body);
-  //     return DataModel.fromJson(mData);
-  //   } else {
-  //     return DataModel();
-  //   }
-  // }
+
 }
