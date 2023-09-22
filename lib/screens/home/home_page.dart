@@ -307,7 +307,7 @@ class _HomePageState extends State<HomePage> {
             child: Center(
               child: Text(
                 data[index]["name"],
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white,fontSize: 22,fontFamily: "Robotobold"),
               ),
             ),
           ),
