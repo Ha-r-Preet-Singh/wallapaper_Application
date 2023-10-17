@@ -3,6 +3,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:wallpaper_app/screens/wallpapers_list/wallpapers.dart';
 import 'package:wallpaper_app/ui_helper.dart';
 
 
@@ -13,19 +14,32 @@ class CustomTextField extends StatelessWidget {
   TextEditingController? TextEditContoller;
   String? Function(String?) validate;
 
+  String? Function(String?) onSubmitted;
+
+
+
+
 
   CustomTextField({
+
     required this.hintTxt,
     this.suffIcon,
     required this.validate,
     this.TextEditContoller,
+    required this.onSubmitted,
+
+
 
 
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextField(
+      onSubmitted: onSubmitted,
+
+
+
       controller: TextEditContoller,
       decoration: InputDecoration(
 
@@ -47,7 +61,7 @@ class CustomTextField extends StatelessWidget {
         ),
 
       ),
-      validator: validate,
+
     );
   }
 }

@@ -2,13 +2,13 @@ import 'package:wallpaper_app/models/photo_model.dart';
 
 class DataModel {
   int? page;
-  int? perPage;
+  int? per_page;
   List<PhotosModel>? photos;
-  int? totalResults;
-  String? nextPage;
+  int? total_results;
+  String? next_page;
 
   DataModel(
-      {this.page, this.perPage, this.photos, this.totalResults, this.nextPage});
+      {this.page, this.per_page, this.photos, this.total_results, this.next_page});
 
   factory DataModel.fromJson(Map<String, dynamic> json) {
     List<PhotosModel> mProducts = [];
@@ -19,10 +19,10 @@ class DataModel {
 
     return DataModel(
       page: json["page"],
-      perPage: json["perPage"],
+      per_page: json["per_page"],
       photos: mProducts,
-      totalResults: json["totalResults"],
-      nextPage: json["nextPage"],
+      total_results: json["total_results"],
+      next_page: json["next_page"],
     );
   }
 }

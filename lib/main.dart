@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper_app/api/api_helper.dart';
+import 'package:wallpaper_app/bloc%202/trending_bloc.dart';
 import 'package:wallpaper_app/bloc/wallpaper_bloc.dart';
 import 'package:wallpaper_app/screens/bottom%20navigation%20bar/bottom_bar.dart';
 
 void main() {
-  runApp(BlocProvider(create: (context) => WallpaperBloc(apiHelper: ApiHelper()),
-  child:  MyApp(),));
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(
+      create: (context) => WallpaperBloc(apiHelper: ApiHelper()),
+    ),
+    BlocProvider(
+      create: (context) => TrendingBloc(apiHelper: ApiHelper()),
+    )
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,11 +26,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:BottomBar(),
+      home: BottomBar(),
     );
   }
 }
