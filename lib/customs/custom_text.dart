@@ -14,6 +14,7 @@ class CustomText extends StatelessWidget {
 
 
 
+
    CustomText({
     required this.mText,
      this.mSize,

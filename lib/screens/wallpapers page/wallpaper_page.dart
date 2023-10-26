@@ -21,6 +21,69 @@ class WallpapersPage extends StatelessWidget {
     var media = MediaQuery.of(context);
     mWidth = MediaQuery.of(context).size.width;
     mHeight = MediaQuery.of(context).size.height;
+
+
+
+    Future setWallpaper() {
+      return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 400,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Set As Wallpaper Screens",
+                  style: TextStyle(fontSize: 20),
+                ),
+                Divider(),
+                SizedBox(
+                  height: 30,
+                ),
+                InkWell(
+                  onTap: setBothScreens,
+                  child: Text(
+                    "Set Both Screens",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                InkWell(
+                  onTap: setLockScreens,
+                  child: Text(
+                    "Lock Screens",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                InkWell(
+                  onTap: setHomeWallpaper,
+                  child: Text(
+                    "Home Screens",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+
     return Scaffold(
       body: OrientationBuilder(
         builder: (context, orientation) {
@@ -113,19 +176,20 @@ class WallpapersPage extends StatelessWidget {
                                   ),
                                 ),
                                 hSpacer(),
-                                CustomText(
-                                  mText: "Save",
-                                  mSize: 15,
-                                  mColor: Colors.white,
+                                InkWell(
+                                  onTap: downloadWallpaper,
+                                  child: CustomText(
+                                    mText: "Save",
+                                    mSize: 15,
+                                    mColor: Colors.white,
+                                  ),
                                 ),
                               ],
                             ),
                             Column(
                               children: [
                                 InkWell(
-                                  onTap: () {
-                                    setWallpaper();
-                                  },
+                                  onTap: setWallpaper,
                                   child: Container(
                                     height: media.size.height * .07,
                                     width: media.size.width * .15,
@@ -294,21 +358,56 @@ class WallpapersPage extends StatelessWidget {
     });
   }
 
-  void setWallpaper() {
-    var streamProgress = Wallpaper.imageDownloadProgress(query);
 
-    streamProgress.listen((event) {
+  /// set mobile screes wallpaper
+  void setHomeWallpaper() {
+    var stremProgress = Wallpaper.imageDownloadProgress(query);
+
+    stremProgress.listen((event) {
       print(event);
     }, onDone: () async {
-      //wallpaper set
+      /// wallpaper set dispaly
+      /// add widget
 
       var check = await Wallpaper.homeScreen(
-          width: mWidth!,
           height: mHeight!,
+          width: mWidth!,
           options: RequestSizeOptions.RESIZE_EXACT);
       print(check);
     }, onError: (e) {
-      print("Error $e");
+      print("Error");
+    });
+  }
+
+  void setLockScreens() {
+    var stremProgress = Wallpaper.imageDownloadProgress(query);
+
+    stremProgress.listen((event) {
+      print(event);
+    }, onDone: () async {
+      var check = await Wallpaper.lockScreen(
+          height: mHeight!,
+          width: mWidth!,
+          options: RequestSizeOptions.RESIZE_EXACT);
+      print(check);
+    }, onError: (e) {
+      print("error");
+    });
+  }
+
+  void setBothScreens() {
+    var stremProgress = Wallpaper.imageDownloadProgress(query);
+
+    stremProgress.listen((event) {
+      print(event);
+    }, onDone: () async {
+      var check = await Wallpaper.bothScreen(
+          height: mHeight!,
+          width: mWidth!,
+          options: RequestSizeOptions.RESIZE_EXACT);
+      print(check);
+    }, onError: (e) {
+      print("error");
     });
   }
 }

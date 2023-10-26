@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:wallpaper_app/api/api_helper.dart';
 import 'package:wallpaper_app/api/urls.dart';
-import 'package:wallpaper_app/bloc/wallpaper_bloc.dart';
+
 import 'package:wallpaper_app/models/data_model.dart';
 
 part 'trending_event.dart';

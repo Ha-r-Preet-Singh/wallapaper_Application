@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper_app/api/api_helper.dart';
 import 'package:wallpaper_app/bloc%202/trending_bloc.dart';
-import 'package:wallpaper_app/bloc/wallpaper_bloc.dart';
+
 import 'package:wallpaper_app/screens/bottom%20navigation%20bar/bottom_bar.dart';
+import 'package:wallpaper_app/searchbloc/wallpaper_bloc.dart';
 
 void main() {
   runApp(MultiBlocProvider(providers: [

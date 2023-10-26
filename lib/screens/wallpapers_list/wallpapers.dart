@@ -3,18 +3,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:wallpaper_app/bloc/wallpaper_bloc.dart';
+
 import 'package:wallpaper_app/constants/constants.dart';
 import 'package:wallpaper_app/customs/custom_text.dart';
 import 'package:wallpaper_app/models/data_model.dart';
 import 'package:wallpaper_app/models/photo_model.dart';
 import 'package:wallpaper_app/screens/wallpapers%20page/wallpaper_page.dart';
+import 'package:wallpaper_app/searchbloc/wallpaper_bloc.dart';
 import 'package:wallpaper_app/ui_helper.dart';
 import 'package:http/http.dart' as http;
 
 class Wallpapers extends StatefulWidget {
-  late ScrollController mController;
-
+   ScrollController mController = ScrollController();
 
   String query;
   String? colorCode;
@@ -33,9 +33,8 @@ class _WallpapersState extends State<Wallpapers> {
 
   List<PhotosModel> arrPhotos = [];
 
-  int? totalResult ;
+  int? totalResult;
   int page = 1;
-
 
   // late Future<DataModel> photos;
 
@@ -43,26 +42,35 @@ class _WallpapersState extends State<Wallpapers> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    context.read<WallpaperBloc>().add(
-        GetSearchWallpaper(query: widget.query, colorCode: widget.colorCode,page: page));
-    getUpdate();
 
+
+    context.read<WallpaperBloc>().add(GetSearchWallpaper(
+        query: widget.query, colorCode: widget.colorCode, page: page));
+    getUpdate();
   }
 
-  void getUpdate(){
-    widget.mController = ScrollController()..addListener(() {
-      if(widget.mController.position.pixels==widget.mController.position.maxScrollExtent){
-       num totalPage;
-       if(totalResult!=null){
-         totalResult!%40==0?totalPage=totalResult!/40:totalPage=(totalResult!/40)+1;
-         if(page<totalPage){
-           page++;
-           context.read<WallpaperBloc>().add(
-               GetSearchWallpaper(query: widget.query, colorCode: widget.colorCode,page: page));
-         }
-       }
-      }
-    });
+
+
+  void getUpdate() {
+    widget.mController = ScrollController()
+      ..addListener(() {
+        if (widget.mController.position.pixels ==
+            widget.mController.position.maxScrollExtent) {
+          num totalPage;
+          if (totalResult != null) {
+            totalResult! % 40 == 0
+                ? totalPage = totalResult! / 40
+                : totalPage = (totalResult! / 40) + 1;
+            if (page < totalPage) {
+              page++;
+              context.read<WallpaperBloc>().add(GetSearchWallpaper(
+                  query: widget.query,
+                  colorCode: widget.colorCode,
+                  page: page));
+            }
+          }
+        }
+      });
   }
 
   @override
@@ -74,44 +82,55 @@ class _WallpapersState extends State<Wallpapers> {
       backgroundColor: AppColors.backgroundColor,
       body: BlocListener<WallpaperBloc, WallpaperState>(
         listener: (_, state) {
-
           if (state is WallpaperLoadingState) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Loading more images'),));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Loading more images'),
+            ));
           } else if (state is WallpaperErrorState) {
-             Column(
-
+            Column(
               children: [
                 Center(
                   child: Text(state.errorMsg),
-                  
                 ),
-                Lottie.asset("assets/lottie/error.json",fit: BoxFit.cover,height: 250),
+                Lottie.asset("assets/lottie/error.json",
+                    fit: BoxFit.cover, height: 250),
               ],
             );
           } else if (state is WallpaperLoadedState) {
-           setState(() {
-             arrPhotos+=state.mData.photos!;
-             totalResult=state.mData.total_results;
-
-           });
-
+            setState(() {
+              arrPhotos += state.mData.photos!;
+              totalResult = state.mData.total_results;
+            });
           }
-
         },
-        child:  Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20, top: 50),
-              child: CustomText(
-                mText: widget.query,
-                mSize: 37,
-              ),
+            Row(
+
+
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 50),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                      child: Icon(Icons.arrow_back)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 50),
+                  child: CustomText(
+                    mText: widget.query,
+                    mSize: 37,
+                  ),
+                ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: CustomText(
-                mText: "${totalResult??'Loading'} wallpaper available",
+                mText: "${totalResult ?? 'Loading'} wallpaper available",
                 mSize: 17,
                 mColor: AppColors.greyColor,
               ),
@@ -131,7 +150,14 @@ class _WallpapersState extends State<Wallpapers> {
                         onTap: () {
                           isSelectedColor = true;
 
-                          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Wallpapers(query: widget.query,colorCode: color[index]["name"],),));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Wallpapers(
+                                  query: widget.query,
+                                  colorCode: color[index]["name"],
+                                ),
+                              ));
                         },
                         child: Container(
                           width: isLandscape
@@ -150,8 +176,6 @@ class _WallpapersState extends State<Wallpapers> {
                     );
                   },
                 )),
-
-
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -171,10 +195,8 @@ class _WallpapersState extends State<Wallpapers> {
                             MaterialPageRoute(
                               builder: (context) => WallpapersPage(
                                 query: isLandscape
-                                    ? arrPhotos[index].src!
-                                    .landscape!
-                                    : arrPhotos[index].src!
-                                    .portrait!,
+                                    ? arrPhotos[index].src!.landscape!
+                                    : arrPhotos[index].src!.portrait!,
                               ),
                             ));
                       },
@@ -183,10 +205,8 @@ class _WallpapersState extends State<Wallpapers> {
                             borderRadius: BorderRadius.circular(21),
                             image: DecorationImage(
                                 image: NetworkImage(isLandscape
-                                    ? arrPhotos[index].src!
-                                    .landscape!
-                                    : arrPhotos[index].src!
-                                    .portrait!),
+                                    ? arrPhotos[index].src!.landscape!
+                                    : arrPhotos[index].src!.portrait!),
                                 fit: BoxFit.fill)),
                       ),
                     );
@@ -195,7 +215,7 @@ class _WallpapersState extends State<Wallpapers> {
               ),
             ),
           ],
-        ) ,
+        ),
       ),
     );
   }

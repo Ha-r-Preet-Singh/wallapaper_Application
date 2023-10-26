@@ -13,17 +13,17 @@ part 'wallpaper_state.dart';
 class WallpaperBloc extends Bloc<WallpaperEvent, WallpaperState> {
   ApiHelper apiHelper;
   WallpaperBloc({required this.apiHelper}) : super(WallpaperInitialState()) {
-    on<GetTrendingWallpaper>((event, emit) async {
-      emit(WallpaperLoadingState());
-
-      try {
-        var res = await apiHelper.getApi("${Urls.treandingUrl}?per_page=20");
-
-        emit(WallpaperLoadedState(mData: DataModel.fromJson(res)));
-      } catch (e) {
-        emit(WallpaperErrorState(errorMsg: e.toString()));
-      }
-    });
+    // on<GetTrendingWallpaper>((event, emit) async {
+    //   emit(WallpaperLoadingState());
+    //
+    //   try {
+    //     var res = await apiHelper.getApi("${Urls.treandingUrl}?per_page=20");
+    //
+    //     emit(WallpaperLoadedState(mData: DataModel.fromJson(res)));
+    //   } catch (e) {
+    //     emit(WallpaperErrorState(errorMsg: e.toString()));
+    //   }
+    // });
 
     on<GetSearchWallpaper>((event, emit) async {
       emit(WallpaperLoadingState());

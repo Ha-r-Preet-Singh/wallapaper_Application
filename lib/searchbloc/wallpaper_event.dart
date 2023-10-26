@@ -12,4 +12,4 @@ class GetSearchWallpaper extends WallpaperEvent {
        {required this.query,this.colorCode,required this.page});
 }
 
-class GetTrendingWallpaper extends WallpaperEvent {}
+// class GetTrendingWallpaper extends WallpaperEvent {}
